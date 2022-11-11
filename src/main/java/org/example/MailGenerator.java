@@ -17,13 +17,13 @@ public class MailGenerator {
         rd = new Random();
     }
 
-    public LinkedList<Mail> generateMail() {
+    public LinkedList<Mail> generateMails() {
         LinkedList<Mail> mails = new LinkedList<>();
         LinkedList<LinkedList<String>> groups = getRandomGroups();
         LinkedList<String> groupsMessages = getRandomMessages();
 
         for (int i = 0; i < nbGroup; i++) {
-            int idxSender = rd.nextInt(emails.size());
+            int idxSender = rd.nextInt(groups.get(i).size());
             String sender = groups.get(i).get(idxSender);
             groups.get(i).remove(idxSender);
 
@@ -35,11 +35,20 @@ public class MailGenerator {
 
     private LinkedList<LinkedList<String>> getRandomGroups() {
         LinkedList<LinkedList<String>> groups = new LinkedList<>();
-        for (int i = 0; i < nbGroup; i++) {
+        // Exception ????????????????????????????? pour empecher d'avoir des groupes de moins de 2 personnes
+        int nbEmailGroup = Math.max(2, emails.size() / nbGroup);
+
+        for (int i = 0; i < nbGroup || emails.size() == 0; i++) {
             groups.add(new LinkedList<>());
-            int idxEmails = rd.nextInt(emails.size());
-            groups.get(i).add(emails.get(idxEmails));
-            emails.remove(idxEmails);
+            for (int j = 0; j < nbEmailGroup; j++) {
+                int idxEmails = rd.nextInt(emails.size());
+                groups.get(i).add(emails.get(idxEmails));
+                emails.remove(idxEmails);
+            }
+        }
+        //Si il y a un reste lors de la division assigne aléatoirement à un groupe existant
+        for (String email : emails) {
+            groups.get(rd.nextInt(groups.size())).add(email);
         }
 
         return groups;
@@ -47,10 +56,11 @@ public class MailGenerator {
 
     private LinkedList<String> getRandomMessages() {
         LinkedList<String> groupsMessages = new LinkedList<>();
+        // Vérifier si assez de message pour le nombre de groupe ????????????????????
         for (int i = 0; i < nbGroup; i++) {
             int idxMessages = rd.nextInt(messages.size());
-            messages.add(messages.get(idxMessages));
-            emails.remove(idxMessages);
+            groupsMessages.add(messages.get(idxMessages));
+            messages.remove(idxMessages);
         }
 
         return groupsMessages;
