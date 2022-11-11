@@ -5,10 +5,13 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
 public class SmtpConfig {
+    private final static String RESSOURCES_PATH = "src/main/resources/";
+
     private final String configFile;
     private final String emailsFile;
     private final String messagesFile;
@@ -19,10 +22,10 @@ public class SmtpConfig {
         this.messagesFile = messagesFile;
     }
 
-    public List<String> getEmails() {
-        List<String> emails = new ArrayList<>();
+    public LinkedList<String> getEmails() {
+        LinkedList<String> emails = new LinkedList<>();
 
-        try (FileReader fr = new FileReader(emailsFile, StandardCharsets.UTF_8);
+        try (FileReader fr = new FileReader(RESSOURCES_PATH + emailsFile, StandardCharsets.UTF_8);
              BufferedReader reader = new BufferedReader(fr)) {
 
             String str;
@@ -37,10 +40,10 @@ public class SmtpConfig {
         return emails;
     }
 
-    public List<String> getMessages() {
-        List<String> messages = new ArrayList<>();
+    public LinkedList<String> getMessages() {
+        LinkedList<String> messages = new LinkedList<>();
 
-        try (FileReader fr = new FileReader(messagesFile, StandardCharsets.UTF_8);
+        try (FileReader fr = new FileReader(RESSOURCES_PATH + messagesFile, StandardCharsets.UTF_8);
              BufferedReader reader = new BufferedReader(fr)) {
 
             StringBuilder message = new StringBuilder();
@@ -63,10 +66,7 @@ public class SmtpConfig {
     private Properties getProps() {
         Properties props = new Properties();
 
-        FileReader fr = null;
-        try {
-            fr = new FileReader(configFile, StandardCharsets.UTF_8);
-            BufferedReader reader = new BufferedReader(fr);
+        try (FileReader reader = new FileReader(RESSOURCES_PATH + configFile, StandardCharsets.UTF_8)) {
             props.load(reader);
         } catch (IOException e) {
             throw new RuntimeException("Error while getting the properties !");
