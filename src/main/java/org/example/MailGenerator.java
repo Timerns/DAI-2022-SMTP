@@ -27,7 +27,7 @@ public class MailGenerator {
             String sender = groups.get(i).get(idxSender);
             groups.get(i).remove(idxSender);
 
-            mails.add(new Mail(/*sender, groups.get(i), groupsMessages.get(i)*/));
+            mails.add(new Mail(sender, groups.get(i), groupsMessages.get(i)));
         }
 
         return mails;
