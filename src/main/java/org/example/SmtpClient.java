@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
+import java.util.LinkedList;
 
 public class SmtpClient {
 
@@ -15,9 +16,9 @@ public class SmtpClient {
         initConnectionToServer(address, port);
     }
 
-    public void send(Mail mail) {
+    public void send(LinkedList<Mail> mails) {
         try {
-            sendMail(mail);
+            sendMail(mails);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -36,26 +37,31 @@ public class SmtpClient {
         }
     }
 
-    private void sendMail(Mail mail) throws IOException {
+    private void sendMail(LinkedList<Mail> mails) throws IOException {
         out.write("EHLO test.com\r\n");
         out.flush();
         parseResponce();
-        out.write("MAIL FROM:<"+ mail.from +">\r\n");
-        out.flush();
-        parseResponce();
-        out.write("RCPT To:<"+ mail.to[0] +">\r\n");
-        out.flush();
-        parseResponce();
-        out.write("DATA\r\n");
-        out.flush();
-        parseResponce();
-        //body and info of mail to send
-        out.write("Subject: " + mail.subject + "\r\n");
-        out.write("\r\n");
-        out.write("je m'appelle tim.\r\n Je suis une autre ligne \r\n mes salutation tim ernst");
-        out.write("\r\n.\r\n");
-        out.flush();
-        parseResponce();
+        for (Mail mail: mails) {
+            out.write("MAIL FROM:<" + mail.getSender() + ">\r\n");
+            out.flush();
+            parseResponce();
+            for (int i = 0; i < mail.getRecipients().size(); i++) {
+                out.write("RCPT To:<" + mail.getRecipients().get(i) + ">\r\n");
+                out.flush();
+                parseResponce();
+            }
+            out.write("DATA\r\n");
+            out.flush();
+            parseResponce();
+            //body and info of mail to send
+//        out.write("Bcc: <" +  mail.to[0] + ">\r\n");
+//        out.write("Subject: " + mail.subject + "\r\n");
+//        out.write("\r\n");
+            out.write(mail.getMessage());
+            out.write("\r\n.\r\n");
+            out.flush();
+            parseResponce();
+        }
         out.write("QUIT\r\n");
         out.flush();
         parseResponce();
