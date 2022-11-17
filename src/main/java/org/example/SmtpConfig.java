@@ -4,9 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Properties;
 
 public class SmtpConfig {
@@ -34,7 +32,7 @@ public class SmtpConfig {
             }
 
         } catch (IOException e) {
-            throw new RuntimeException("Error while getting the emails !");
+            throw new RuntimeException("Erreur lors de la récupération des emails !");
         }
 
         return emails;
@@ -57,7 +55,7 @@ public class SmtpConfig {
                 }
             }
         } catch (IOException e) {
-            throw new RuntimeException("Error while getting the messages !");
+            throw new RuntimeException("Erreur lors de la récupération des messages !");
         }
 
         return messages;
@@ -69,7 +67,7 @@ public class SmtpConfig {
         try (FileReader reader = new FileReader(RESSOURCES_PATH + configFile, StandardCharsets.UTF_8)) {
             props.load(reader);
         } catch (IOException e) {
-            throw new RuntimeException("Error while getting the properties !");
+            throw new RuntimeException("Erreur lors de la récupération des configs !");
         }
 
         return props;
@@ -80,10 +78,18 @@ public class SmtpConfig {
     }
 
     public int getServerPort() {
-        return Integer.parseInt(getProps().getProperty("smtpServerPort", "25"));
+        try {
+            return Integer.parseInt(getProps().getProperty("smtpServerPort", "25"));
+        } catch (Exception e) {
+            throw new RuntimeException("Le numéro de port n'est pas un nombre !");
+        }
     }
 
     public int getNumberOfGroups() {
-        return Integer.parseInt(getProps().getProperty("numberGroups", "1"));
+        try {
+            return Integer.parseInt(getProps().getProperty("numberGroups", "1"));
+        } catch (Exception e) {
+            throw new RuntimeException("Le nombre de groupes n'est pas un nombre !");
+        }
     }
 }

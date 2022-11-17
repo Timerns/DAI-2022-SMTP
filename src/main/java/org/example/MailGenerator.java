@@ -35,10 +35,15 @@ public class MailGenerator {
 
     private LinkedList<LinkedList<String>> getRandomGroups() {
         LinkedList<LinkedList<String>> groups = new LinkedList<>();
-        // Exception ????????????????????????????? pour empecher d'avoir des groupes de moins de 2 personnes
-        int nbEmailGroup = Math.max(2, emails.size() / nbGroup);
+        if (nbGroup <= 0) {
+            throw new RuntimeException("Le nombre de groupe doit être plus grand que 0 !");
+        }
+        int nbEmailGroup = emails.size() / nbGroup;
+        if (nbEmailGroup < 2) {
+            throw new RuntimeException("La taille minimale d'un groupe est 2 !");
+        }
 
-        for (int i = 0; i < nbGroup || emails.size() == 0; i++) {
+        for (int i = 0; i < nbGroup; i++) {
             groups.add(new LinkedList<>());
             for (int j = 0; j < nbEmailGroup; j++) {
                 int idxEmails = rd.nextInt(emails.size());
@@ -56,7 +61,11 @@ public class MailGenerator {
 
     private LinkedList<String> getRandomMessages() {
         LinkedList<String> groupsMessages = new LinkedList<>();
-        // Vérifier si assez de message pour le nombre de groupe ????????????????????
+
+        if (nbGroup > messages.size()) {
+            throw new RuntimeException("Il n'y avait pas assez de messages pour tous les groupes !");
+        }
+
         for (int i = 0; i < nbGroup; i++) {
             int idxMessages = rd.nextInt(messages.size());
             groupsMessages.add(messages.get(idxMessages));
