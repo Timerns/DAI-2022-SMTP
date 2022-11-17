@@ -12,20 +12,17 @@ public class SmtpClient {
     BufferedWriter out = null;
     BufferedReader in = null;
 
-    public SmtpClient(String address, int port){
+    public SmtpClient(String address, int port) throws Exception {
         initConnectionToServer(address, port);
     }
 
-    private void initConnectionToServer(String address, int port) {
-        try {
-            clientSocket = new Socket(address, port);
-            System.out.println("*** Connected to server ***");
-            out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream(), StandardCharsets.ISO_8859_1));
-            in  = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(), StandardCharsets.ISO_8859_1));
-            parseResponce();
-        } catch (Exception ex) {
-            System.out.println("Error: " + ex);
-        }
+    private void initConnectionToServer(String address, int port) throws Exception {
+        clientSocket = new Socket(address, port);
+        System.out.println("*** Connected to server ***");
+        out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream(), StandardCharsets.ISO_8859_1));
+        in  = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(), StandardCharsets.ISO_8859_1));
+        parseResponce();
+
     }
 
     public void sendMail(LinkedList<Mail> mails) throws IOException {
@@ -38,6 +35,7 @@ public class SmtpClient {
             parseResponce();
             for (int i = 0; i < mail.getRecipients().size(); i++) {
                 out.write("RCPT To:<" + mail.getRecipients().get(i) + ">\r\n");
+                System.out.println(mail.getRecipients().get(i));
                 out.flush();
                 parseResponce();
             }
@@ -45,9 +43,9 @@ public class SmtpClient {
             out.flush();
             parseResponce();
             //body and info of mail to send
-//        out.write("Bcc: <" +  mail.to[0] + ">\r\n");
-//        out.write("Subject: " + mail.subject + "\r\n");
-//        out.write("\r\n");
+            //out.write("Bcc: <" +  mail.to[0] + ">\r\n");
+            //out.write("Subject: " + mail.subject + "\r\n");
+            //out.write("\r\n");
             out.write(mail.getMessage());
             out.write("\r\n.\r\n");
             out.flush();
