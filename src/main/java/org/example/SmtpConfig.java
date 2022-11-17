@@ -53,7 +53,7 @@ public class SmtpConfig {
                     messages.add(message.toString());
                     message.setLength(0);
                 } else {
-                    message.append(str).append('\n');
+                    message.append(str).append("\r\n");
                 }
             }
         } catch (IOException e) {
