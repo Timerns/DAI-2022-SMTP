@@ -1,11 +1,8 @@
 package org.example;
 
-import java.io.IOException;
-import java.util.LinkedList;
-
 public class Main {
     public static void main(String[] args) {
-        SmtpConfig config = new SmtpConfig("config.properties","emails.utf8", "messages.utf8");
+        SmtpConfig config = new SmtpConfig("config.properties", "emails.utf8", "messages.utf8");
 
         try {
             SmtpClient client = new SmtpClient(config.getServerAddress(), config.getServerPort());

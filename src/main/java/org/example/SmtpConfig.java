@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.Properties;
 
 public class SmtpConfig {
-    private final static String RESSOURCES_PATH = "src/main/resources/";
+    private final static String RESSOURCES_PATH = "resources/";
 
     private final String configFile;
     private final String emailsFile;
