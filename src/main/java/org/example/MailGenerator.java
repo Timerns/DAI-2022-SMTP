@@ -39,8 +39,8 @@ public class MailGenerator {
             throw new RuntimeException("Le nombre de groupe doit être plus grand que 0 !");
         }
         int nbEmailGroup = emails.size() / nbGroup;
-        if (nbEmailGroup < 2) {
-            throw new RuntimeException("La taille minimale d'un groupe est 2 !");
+        if (nbEmailGroup < 3) {
+            throw new RuntimeException("La taille minimale d'un groupe est 3 !");
         }
 
         for (int i = 0; i < nbGroup; i++) {
