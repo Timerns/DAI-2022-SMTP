@@ -16,15 +16,6 @@ public class SmtpClient {
         initConnectionToServer(address, port);
     }
 
-    public void send(LinkedList<Mail> mails) {
-        try {
-            sendMail(mails);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-
     private void initConnectionToServer(String address, int port) {
         try {
             clientSocket = new Socket(address, port);
@@ -37,7 +28,7 @@ public class SmtpClient {
         }
     }
 
-    private void sendMail(LinkedList<Mail> mails) throws IOException {
+    public void sendMail(LinkedList<Mail> mails) throws IOException {
         out.write("EHLO test.com\r\n");
         out.flush();
         parseResponce();
