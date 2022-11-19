@@ -5,9 +5,9 @@ import java.util.LinkedList;
 public class Mail {
     private final String sender;
     private final LinkedList<String> recipients;
-    private final String message;
+    private final Message message;
 
-    public Mail(String sender, LinkedList<String> recipients, String message) {
+    public Mail(String sender, LinkedList<String> recipients, Message message) {
         this.sender = sender;
         this.recipients = recipients;
         this.message = message;
@@ -21,7 +21,7 @@ public class Mail {
         return recipients;
     }
 
-    public String getMessage() {
+    public Message getMessage() {
         return message;
     }
 }

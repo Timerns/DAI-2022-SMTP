@@ -38,20 +38,26 @@ public class SmtpConfig {
         return emails;
     }
 
-    public LinkedList<String> getMessages() {
-        LinkedList<String> messages = new LinkedList<>();
+    public LinkedList<Message> getMessages() {
+        LinkedList<Message> messages = new LinkedList<>();
 
         try (FileReader fr = new FileReader(RESSOURCES_PATH + messagesFile, StandardCharsets.UTF_8);
              BufferedReader reader = new BufferedReader(fr)) {
 
-            StringBuilder message = new StringBuilder();
+            boolean isSubjectLine = true;
+            String subject = "No Subject";
+            StringBuilder text = new StringBuilder();
             String str;
             while ((str = reader.readLine()) != null) {
-                if (str.equals("///")) {
-                    messages.add(message.toString());
-                    message.setLength(0);
+                if (isSubjectLine) {
+                    isSubjectLine = false;
+                    subject = str;
+                } else if (str.equals("///")) {
+                    isSubjectLine = true;
+                    messages.add(new Message(subject, text.toString()));
+                    text.setLength(0);
                 } else {
-                    message.append(str).append("\r\n");
+                    text.append(str).append("\r\n");
                 }
             }
         } catch (IOException e) {

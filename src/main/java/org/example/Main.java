@@ -7,7 +7,10 @@ public class Main {
         try {
             SmtpClient client = new SmtpClient(config.getServerAddress(), config.getServerPort());
             MailGenerator mg = new MailGenerator(config.getEmails(), config.getMessages(), config.getNumberOfGroups());
-            client.sendMail(mg.generateMails());
+
+            for (Mail mail : mg.generateMails()) {
+                client.sendMail(mail);
+            }
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }

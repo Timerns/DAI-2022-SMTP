@@ -2,66 +2,81 @@ package org.example;
 
 import java.io.*;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
-import java.util.LinkedList;
 
 public class SmtpClient {
+    private static final String RET = "\r\n";
+    String address;
+    int port;
 
-    Socket clientSocket = null;
-    BufferedWriter out = null;
-    BufferedReader in = null;
-
-    public SmtpClient(String address, int port) throws Exception {
-        initConnectionToServer(address, port);
+    public SmtpClient(String address, int port) {
+        this.address = address;
+        this.port = port;
     }
 
-    private void initConnectionToServer(String address, int port) throws Exception {
-        clientSocket = new Socket(address, port);
+    public void sendMail(Mail mail) throws IOException {
+        Socket clientSocket = new Socket(address, port);
         System.out.println("*** Connected to server ***");
-        out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream(), StandardCharsets.ISO_8859_1));
-        in  = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(), StandardCharsets.ISO_8859_1));
-        parseResponce();
+        BufferedWriter out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream(), StandardCharsets.UTF_8));
+        BufferedReader in  = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(), StandardCharsets.UTF_8));
+        parseResponse(in);
 
-    }
-
-    public void sendMail(LinkedList<Mail> mails) throws IOException {
-        out.write("EHLO test.com\r\n");
+        out.write("EHLO " + address + RET);
         out.flush();
-        parseResponce();
-        for (Mail mail: mails) {
-            out.write("MAIL FROM:<" + mail.getSender() + ">\r\n");
+        parseResponse(in);
+
+        out.write("MAIL FROM:<" + mail.getSender() + ">" + RET);
+        out.flush();
+        parseResponse(in);
+
+        for (int i = 0; i < mail.getRecipients().size(); i++) {
+            out.write("RCPT TO:<" + mail.getRecipients().get(i) + ">" + RET);
             out.flush();
-            parseResponce();
-            for (int i = 0; i < mail.getRecipients().size(); i++) {
-                out.write("RCPT To:<" + mail.getRecipients().get(i) + ">\r\n");
-                System.out.println(mail.getRecipients().get(i));
-                out.flush();
-                parseResponce();
-            }
-            out.write("DATA\r\n");
-            out.flush();
-            parseResponce();
-            //body and info of mail to send
-            //out.write("Bcc: <" +  mail.to[0] + ">\r\n");
-            //out.write("Subject: " + mail.subject + "\r\n");
-            //out.write("\r\n");
-            out.write(mail.getMessage());
-            out.write("\r\n.\r\n");
-            out.flush();
-            parseResponce();
+            parseResponse(in);
         }
-        out.write("QUIT\r\n");
-        out.flush();
-        parseResponce();
 
+        out.write("DATA\r\n");
+        out.flush();
+        parseResponse(in);
+
+        out.write("From: " + mail.getSender() + RET);
+
+        out.write("To: ");
+        for (int i = 0; i < mail.getRecipients().size(); i++) {
+            out.write((i == 0 ? "" : ", ") + mail.getRecipients().get(i));
+        }
+        out.write(RET);
+        out.flush();
+        parseResponse(in);
+
+        out.write("Subject: " + mail.getMessage().getSubject() + RET);
+        out.flush();
+        parseResponse(in);
+
+        //body and info of mail to send
+        //out.write("Bcc: <" +  mail.to[0] + ">\r\n");
+        //out.write("Subject: " + mail.subject + "\r\n");
+        //out.write("\r\n");
+        out.write(RET);
+        out.write(mail.getMessage().getText());
+        out.write(RET + "." + RET);
+        out.flush();
+        parseResponse(in);
+
+        out.write("QUIT" + RET);
+        out.flush();
+        parseResponse(in);
+
+        in.close();
+        out.close();
+        clientSocket.close();
     }
 
-    private void parseResponce() throws IOException {
+    private void parseResponse(BufferedReader in) throws IOException {
         String line;
         do {
             line = in.readLine();
             System.out.println(line);
-        } while (line.charAt(4) == ' ');
+        } while (line.charAt(4) == '-');
     }
 }

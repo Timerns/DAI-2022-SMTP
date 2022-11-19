@@ -5,12 +5,12 @@ import java.util.Random;
 
 public class MailGenerator {
     private final LinkedList<String> emails;
-    private final LinkedList<String> messages;
+    private final LinkedList<Message> messages;
     private final int nbGroup;
 
     private final Random rd;
 
-    public MailGenerator(LinkedList<String> emails, LinkedList<String> messages, int nbGroup) {
+    public MailGenerator(LinkedList<String> emails, LinkedList<Message> messages, int nbGroup) {
         this.emails = emails;
         this.messages = messages;
         this.nbGroup = nbGroup;
@@ -20,7 +20,7 @@ public class MailGenerator {
     public LinkedList<Mail> generateMails() {
         LinkedList<Mail> mails = new LinkedList<>();
         LinkedList<LinkedList<String>> groups = getRandomGroups();
-        LinkedList<String> groupsMessages = getRandomMessages();
+        LinkedList<Message> groupsMessages = getRandomMessages();
 
         for (int i = 0; i < nbGroup; i++) {
             int idxSender = rd.nextInt(groups.get(i).size());
@@ -59,8 +59,8 @@ public class MailGenerator {
         return groups;
     }
 
-    private LinkedList<String> getRandomMessages() {
-        LinkedList<String> groupsMessages = new LinkedList<>();
+    private LinkedList<Message> getRandomMessages() {
+        LinkedList<Message> groupsMessages = new LinkedList<>();
 
         if (nbGroup > messages.size()) {
             throw new RuntimeException("Il n'y avait pas assez de messages pour tous les groupes !");
