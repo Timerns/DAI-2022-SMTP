@@ -1,3 +1,11 @@
+/**
+ * Fichier pour récupérer les configurations d'un SMTP
+ *
+ * @author Grégory Rey-Mermet
+ * @author Tim Ernst
+ * @author Eric Peronetti
+ * Date    24.11.2022
+ */
 package org.example;
 
 import java.io.BufferedReader;
@@ -6,9 +14,11 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.Properties;
+import java.util.regex.Pattern;
 
 public class SmtpConfig {
     private final static String RESSOURCES_PATH = "resources/";
+    private final static Pattern PATTERN = Pattern.compile("^[A-Za-z0-9._%+-]*@[A-Za-z0-9.-]*\\.[A-Za-z]*$");
 
     private final String configFile;
     private final String emailsFile;
@@ -28,6 +38,9 @@ public class SmtpConfig {
 
             String str;
             while ((str = reader.readLine()) != null) {
+                if (!PATTERN.matcher(str).find()) {
+                    throw new RuntimeException("Le format de l'email est incorrect : " + str);
+                }
                 emails.add(str);
             }
 
