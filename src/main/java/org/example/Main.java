@@ -1,3 +1,11 @@
+/**
+ * Programme qui effectue automatiquement des emails de pranks sur une liste de personne
+ *
+ * @author Grégory Rey-Mermet
+ * @author Tim Ernst
+ * @author Eric Peronetti
+ * Date    24.11.2022
+ */
 package org.example;
 
 public class Main {
@@ -14,9 +22,5 @@ public class Main {
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
-
-//        Content-Type: multipart/related; type="text/html";
-//        Mail mail = new Mail( "tim@heig.vd.ch", new LinkedList<String>({"eric@heig-vd.ch", "greg@heig-vd.ch"}), "Test", "HACKER");
-
     }
 }
