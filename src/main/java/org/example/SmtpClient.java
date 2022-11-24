@@ -11,6 +11,7 @@ package org.example;
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 
 public class SmtpClient {
     /**
@@ -72,6 +73,9 @@ public class SmtpClient {
         out.flush();
         parseResponse(in);
 
+        //Encodage de la partie donnée de l'email
+        out.write("Content-Type: text/plain; charset=utf-8" + CRLF);
+
         //Sender de l'email
         out.write("From: " + mail.getSender() + CRLF);
 
@@ -84,7 +88,7 @@ public class SmtpClient {
         out.flush();
         parseResponse(in);
 
-        out.write("Subject: " + mail.getMessage().getSubject() + CRLF);
+        out.write("Subject: =?utf-8?B?" + Base64.getEncoder().encodeToString(mail.getMessage().getSubject().getBytes()) + "?=" + CRLF);
         out.flush();
         parseResponse(in);
 
