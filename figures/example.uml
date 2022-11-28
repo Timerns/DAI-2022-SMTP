@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>org.example</OriginalElement>
+  <nodes>
+    <node x="-577.4731182795697" y="6.999999999999993">org.example.SmtpClient</node>
+    <node x="-293.0456989247312" y="397.54838709677404">org.example.Message</node>
+    <node x="-3.9973118279569917" y="255.1075268817204">org.example.Mail</node>
+    <node x="-272.0" y="-15.0">org.example.MailGenerator</node>
+    <node x="-576.4731182795697" y="255.10752688172036">org.example.SmtpConfig</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="org.example.SmtpConfig" target="org.example.Message" relationship="CREATE">
+      <point x="0.0" y="137.5" />
+      <point x="-452.9731182795697" y="586.2473118279569" />
+      <point x="-179.7956989247312" y="586.2473118279569" />
+      <point x="37.75" y="-60.5" />
+    </edge>
+    <edge source="org.example.MailGenerator" target="org.example.Mail" relationship="CREATE">
+      <point x="83.25" y="93.5" />
+      <point x="-22.25" y="213.5537634408602" />
+      <point x="113.50268817204301" y="213.5537634408602" />
+      <point x="0.0" y="-82.5" />
+    </edge>
+    <edge source="org.example.Mail" target="org.example.Message" relationship="TO_ONE">
+      <point x="0.0" y="82.5" />
+      <point x="113.50268817204301" y="469.1827956989247" />
+      <point x="-255.2956989247312" y="469.1827956989247" />
+      <point x="-37.75" y="-60.5" />
+    </edge>
+    <edge source="org.example.MailGenerator" target="org.example.Message" relationship="TO_MANY">
+      <point x="-83.25" y="93.5" />
+      <point x="-188.75" y="198.0" />
+      <point x="-255.2956989247312" y="198.0" />
+      <point x="-37.75" y="-60.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="1.0" showDependencies="true" x="-173.0" y="295.5" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

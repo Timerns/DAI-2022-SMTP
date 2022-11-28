@@ -24,6 +24,7 @@ sender victim has sent them.
     ├── src                     # Source files of prank project
     ├── pom.xml                 # Maven configuration file
     └── README.md
+
 ## MockMock 
 _"MockMock is a cross-platform SMTP server built on Java. It allows you to test if
 outgoing emails are sent (without actually sending them) and to see what they look
@@ -34,36 +35,40 @@ mock SMTP server and has no email sending functionality."_
 
 The git link to the MockMock project is [here](https://github.com/tweakers/MockMock)
 
-### start mockmock with docker
+### Start mockmock with docker
 **_to complet_**
-### start mockmock without docker
+
+### Start mockmock without docker
 **_to complet_**
+
 ## How to start and configure the prank project
 In the resources folder at the root of the repository, multiple files are used to
 configure the project. The 3 files must be in the resources folder for it to be able to run.
 
-### start the prank project
+### Start the prank project
 **_to complet_**
+
 ### config.properties
 The config.properties file is used to configure how to contact the SMTP
-server and specify the number of group. The number of group must be greater the 0.
+server and specify the number of group. The number of group must be greater than 0.
 
 Default config (and example to edit):
 
     smtpServerAddress=localhost
     smtpServerPort=25
     numberGroups=1
+
 ### email.utf8
 The email.utf8 file is used to list all emails separated by **\n** or **\r\n**.
 The minimum number of emails in the file must be >= 3 * numberGroups in the config.properties
-file. The minimum of 3 emails per group comes from 1 for the sender and all the other 
-for the receivers (min. 2).
+file. The minimum of 3 emails per group is mandatory to have 1 sender and at least 2 receivers.
 
 Example of 3 emails in the file:
 
     rupak@sbcglobal.net
     ideguy@hotmail.com
     atmarks@yahoo.com
+
 ### messages.utf8
 The messages.utf8 file is used to get a different mail body and subject for all groups.
 The format of the message in the message.uft8 file:
@@ -76,16 +81,25 @@ The format of the message in the message.uft8 file:
 
 Example of one message in the file:
 
-    test1
-    Now is the winter of our discontent
-    Made glorious summer by this sun of York;
-    And all the clouds that lour'd upon our house
-    In the deep bosom of the ocean buried.
-    Now are our brows bound with victorious wreaths;
-    Our bruised arms hung up for monuments;
-    Our stern alarums changed to merry meetings,
-    Our dreadful marches to delightful measures.
-    ///
+    test5
+    Because I could not stop for Death,
+    He kindly stopped for me;
+    The carriage held but just ourselves
+    And Immortality.
 
 ## Description of the implementation
-**_to complet_**
+![](figures/UML.png)
+### SmtpConfig.java
+This class is reading all the configurations to be able to send a prank message.
+
+### Message.java
+It's a class to create a message with it's title and body text.
+
+### Mail.java
+It allows to create a mail with the senders, the recipients and the message to send.
+
+### MailGenerator.java
+This class will create the pranks mails for a number of defined groups
+
+### SmtpClient.java
+This class is used to send email via SMTP.
