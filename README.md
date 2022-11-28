@@ -35,7 +35,7 @@ mock SMTP server and has no email sending functionality."_
 
 The git link to the MockMock project is [here](https://github.com/tweakers/MockMock)
 
-### start mockmock with docker
+### Start mockmock with docker
 To start the MockMock SMTP server in a docker container, you need to move in the ./MockSMTPServer folder.
 
 To create the docker image run:
@@ -45,15 +45,17 @@ To create the docker image run:
 To run the docker image, that will expose to application on the port 8282 a website that show all email recieved by the SMTP server on port 25:
 
     > run-container.bat
-### start mockmock without docker
+
+### Start mockmock without docker
 To start the MockMock SMTP server without docker you can run:
 
     > start-server.bat
+
 ## How to start and configure the prank project
 In the resources folder at the root of the repository, multiple files are used to
 configure the project. The 3 files must be in the resources folder for it to be able to run.
 
-### start the prank project
+### Start the prank project
 To start the prank project, you need to build the project using maven:
 
     > mvn clean install
@@ -111,6 +113,28 @@ Example of one message in the file:
 
 ## Description of the implementation
 ![](figures/UML.png)
+### SmtpConfig.java
+This class is reading all the configurations to be able to send a prank message.
+Retrieve all the emails of the people who will be pranked, all the messages that
+can possibly be sent to the victims and the number of victims groups that will be
+generated.
+It will also read the configuration needed for the SmtpClient such as the port and
+address of the server.
+
+### Message.java
+It's a simple class to create a message with its title and body text.
+
+### Mail.java
+It allows to create a mail with the sender, the recipients and the message to send.
+
+### MailGenerator.java
+This class will generate prank mails. The function generateMails() will create a
+defined number of random groups and get a list of random messages to assign to each
+group. This function return as many mails as the number of groups.
+
+### SmtpClient.java
+This class is used to send email via SMTP.
+- **to complete**
 
 ### Discussion between the client and the MockMock SMTP server
     S: 220 PcTim.mshome.net ESMTP MockMock SMTP Server version 1.4\r\n
