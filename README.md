@@ -35,18 +35,34 @@ mock SMTP server and has no email sending functionality."_
 
 The git link to the MockMock project is [here](https://github.com/tweakers/MockMock)
 
-### Start mockmock with docker
-**_to complet_**
+### start mockmock with docker
+To start the MockMock SMTP server in a docker container, you need to move in the ./MockSMTPServer folder.
 
-### Start mockmock without docker
-**_to complet_**
+To create the docker image run:
 
+    > build-docker.bat
+
+To run the docker image, that will expose to application on the port 8282 a website that show all email recieved by the SMTP server on port 25:
+
+    > run-container.bat
+### start mockmock without docker
+To start the MockMock SMTP server without docker you can run:
+
+    > start-server.bat
 ## How to start and configure the prank project
 In the resources folder at the root of the repository, multiple files are used to
 configure the project. The 3 files must be in the resources folder for it to be able to run.
 
-### Start the prank project
-**_to complet_**
+### start the prank project
+To start the prank project, you need to build the project using maven:
+
+    > mvn clean install
+
+And then start to start the project with:
+
+    > java -jar .\target\DAI-2022-SMTP-1.0-SNAPSHOT.jar
+
+---
 
 ### config.properties
 The config.properties file is used to configure how to contact the SMTP
@@ -58,6 +74,8 @@ Default config (and example to edit):
     smtpServerPort=25
     numberGroups=1
 
+---
+
 ### email.utf8
 The email.utf8 file is used to list all emails separated by **\n** or **\r\n**.
 The minimum number of emails in the file must be >= 3 * numberGroups in the config.properties
@@ -68,6 +86,8 @@ Example of 3 emails in the file:
     rupak@sbcglobal.net
     ideguy@hotmail.com
     atmarks@yahoo.com
+
+---
 
 ### messages.utf8
 The messages.utf8 file is used to get a different mail body and subject for all groups.
@@ -87,19 +107,35 @@ Example of one message in the file:
     The carriage held but just ourselves
     And Immortality.
 
+---
+
 ## Description of the implementation
 ![](figures/UML.png)
-### SmtpConfig.java
-This class is reading all the configurations to be able to send a prank message.
 
-### Message.java
-It's a class to create a message with it's title and body text.
+### Discussion between the client and the MockMock SMTP server
+    S: 220 PcTim.mshome.net ESMTP MockMock SMTP Server version 1.4\r\n
+    C: EHLO test@test.com\r\n
 
-### Mail.java
-It allows to create a mail with the senders, the recipients and the message to send.
+    S: 250-PcTim.mshome.net\r\n
+    S: 250-8BITMIME\r\n
+    S: 250 Ok\r\n
 
-### MailGenerator.java
-This class will create the pranks mails for a number of defined groups
+    C: MAIL FROM:<test@test.com>\r\n
+    S: 250 Ok\r\n
 
-### SmtpClient.java
-This class is used to send email via SMTP.
+    C: RCPT TO:<test1@test1.com>\r\n
+    S: 250 Ok\r\n
+
+    C: RCPT TO:<test2@test2.com>\r\n
+    S: 250 Ok\r\n
+
+    C: DATA\r\n
+    S: 354 End data with <CR><LF>.<CR><LF>\r\n
+
+    C: Content-Type: text/plain; charset=utf-8\r\n
+    C: From: test@test.com\r\n
+    C: To: test1@test1.com, test2@test2.com\r\n
+    C: Subject: =?utf-8?B?header test?=\r\n
+    C: Now is the winter of our discontent\r\n
+    C: .\r\n
+    S: 250 Ok\r\n
