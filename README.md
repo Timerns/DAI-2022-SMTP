@@ -1,6 +1,7 @@
 # DAI-2022-SMTP
 ## Description
-The mission is to develop a client application that automatically plays pranks on a list of victims:
+The mission is to develop a client application that automatically plays pranks on a
+list of victims:
 
 * The user should be able to **define a list of victims** (concretely,
 you should be able to create a file containing a list of e-mail addresses).
@@ -14,8 +15,9 @@ sender**. In other words, the recipient victims should be lead to believe that t
 sender victim has sent them.
 
 ## Project structure
-    .
+    .   
     ├── MockSMTPServer          # SMTP Server with all docker files
+    ├── figures                 # Store the figures for the README.md
     ├── resources               # Configuration files for the project
     │   ├── config.properties   # Configuration of the SMTP server and the
     │   │                         the number of pranked groups 
@@ -35,16 +37,19 @@ mock SMTP server and has no email sending functionality."_
 
 The git link to the MockMock project is [here](https://github.com/tweakers/MockMock)
 
-The following ways to create, run a mockmock instance, are meant to be executed on a Windows machine.
+The following ways to create, run a mockmock instance, are meant to be executed on a
+Windows machine.
 
 ### Start mockmock with docker
-To start the MockMock SMTP server in a docker container, you need to move in the ./MockSMTPServer folder.
+To start the MockMock SMTP server in a docker container, you need to move in the
+./MockSMTPServer folder.
 
 To create the docker image run:
 
     > build-docker.bat
 
-To run the docker image, that will expose to application on the port 8282 a website that show all email recieved by the SMTP server on port 25:
+To run the docker image, that will expose to application on the port 8282 a website
+that show all email recieved by the SMTP server on port 25:
 
     > run-container.bat
 
@@ -55,7 +60,8 @@ To start the MockMock SMTP server without docker you can run:
 
 ## How to start and configure the prank project
 In the resources folder at the root of the repository, multiple files are used to
-configure the project. The 3 files must be in the resources folder for it to be able to run.
+configure the project. The 3 files must be in the resources folder for it to be able
+to run.
 
 ### Start the prank project
 To start the prank project, you need to build the project using maven:
@@ -82,8 +88,10 @@ Default config (and example to edit):
 
 ### email.utf8
 The email.utf8 file is used to list all emails separated by **\n** or **\r\n**.
-The minimum number of emails in the file must be >= 3 * numberGroups in the config.properties
-file. The minimum of 3 emails per group is mandatory to have 1 sender and at least 2 receivers.
+The minimum number of emails in the file must be >= 3 * numberGroups in the 
+config.properties
+file. The minimum of 3 emails per group is mandatory to have 1 sender and at 
+least 2 receivers.
 
 Example of 3 emails in the file:
 
@@ -116,7 +124,7 @@ Example of one message in the file:
 ---
 
 ## Description of the implementation
-![](figures/UML.png)
+![UML](figures/UML.png)
 ### SmtpConfig.java
 This class is reading all the configurations to be able to send a prank message.
 Retrieve all the emails of the people who will be pranked, all the messages that
@@ -137,7 +145,8 @@ defined number of random groups and get a list of random messages to assign to e
 group. This function return as many mails as the number of groups.
 
 ### SmtpClient.java
-This class is used to connect to a SMTP server and send emails. This class checks if the success code is correct.
+This class is used to connect to a SMTP server and send emails. This class checks if
+the success code is correct.
 
 ### Discussion between the client and the MockMock SMTP server
     S: 220 PcTim.mshome.net ESMTP MockMock SMTP Server version 1.4\r\n
