@@ -50,7 +50,7 @@ public class SmtpClient {
         System.out.println("*** Connected to server ***");
         BufferedWriter out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream(), StandardCharsets.UTF_8));
         BufferedReader in  = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(), StandardCharsets.UTF_8));
-        parseResponse(in);
+        parseResponse(in, 220);
 
         //Extended hello
         out.write("EHLO " + address + CRLF);
@@ -72,7 +72,7 @@ public class SmtpClient {
         //Partie donnée à afficher
         out.write("DATA" + CRLF);
         out.flush();
-        parseResponse(in);
+        parseResponse(in, 354);
 
         //Encodage de la partie donnée de l'email
         out.write("Content-Type: text/plain; charset=utf-8" + CRLF);
@@ -87,11 +87,9 @@ public class SmtpClient {
         }
         out.write(CRLF);
         out.flush();
-        parseResponse(in);
 
         out.write("Subject: =?utf-8?B?" + Base64.getEncoder().encodeToString(mail.getMessage().getSubject().getBytes()) + "?=" + CRLF);
         out.flush();
-        parseResponse(in);
 
         out.write(CRLF);
         out.write(mail.getMessage().getText());
@@ -102,7 +100,7 @@ public class SmtpClient {
         //Fin du message
         out.write("QUIT" + CRLF);
         out.flush();
-        parseResponse(in);
+        parseResponse(in, 221);
 
         //Nettoyage
         in.close();
@@ -110,16 +108,44 @@ public class SmtpClient {
         clientSocket.close();
     }
 
+
     /**
-     * Lis la réponse du serveur
+     * Lis la réponse du serveur et regarde que le code reçu est bien 250
      * @param in Réponse du serveur
-     * @throws IOException Si une I/O erreur est levée
+     * @throws IOException
      */
     private void parseResponse(BufferedReader in) throws IOException {
+        parseResponse(in, 250);
+    }
+
+    /**
+     * Lis la réponse du serveur et regarde que le code reçu est bien le code
+     * attendu
+     * @param in Réponse du serveur
+     * @param codeExpected Code attendu
+     * @throws IOException Si une I/O erreur est levée
+     * @throws RuntimeException Si le codeExpected n'est pas le code reçu
+     * @throws RuntimeException Si le code reçu n'a pas le bon format
+     * @throws NumberFormatException S'il y'a un problème lors de la conversion en int du code
+     */
+    private void parseResponse(BufferedReader in, int codeExpected) throws IOException, NumberFormatException {
         String line;
-        do {
+        while (true) {
             line = in.readLine();
             System.out.println(line);
-        } while (line.charAt(4) == '-');
+            if (line.charAt(3) == ' ' || line.charAt(3) == '-') {
+                String code = line.split(String.valueOf(line.charAt(3)))[0];
+                if (Integer.parseInt(code) == codeExpected) {
+                    if (line.charAt(3) == '-') {
+                        continue;
+                    }
+                    break;
+                }
+
+                throw new RuntimeException("Le code reçu n'était pas égal à celui attendu !");
+            } else {
+                throw new RuntimeException("Le code reçu n'a pas le bon format !");
+            }
+        }
     }
 }

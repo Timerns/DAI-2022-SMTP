@@ -137,8 +137,7 @@ defined number of random groups and get a list of random messages to assign to e
 group. This function return as many mails as the number of groups.
 
 ### SmtpClient.java
-This class is used to send email via SMTP.
-- **to complete**
+This class is used to connect to a SMTP server and send emails. This class checks if the success code is correct.
 
 ### Discussion between the client and the MockMock SMTP server
     S: 220 PcTim.mshome.net ESMTP MockMock SMTP Server version 1.4\r\n
