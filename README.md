@@ -37,8 +37,7 @@ mock SMTP server and has no email sending functionality."_
 
 The git link to the MockMock project is [here](https://github.com/tweakers/MockMock)
 
-The following ways to create, run a mockmock instance, are meant to be executed on a
-Windows machine.
+The following ways to create and run a mockmock instance are meant to be executed on a Windows machine.
 
 ### Start mockmock with docker
 To start the MockMock SMTP server in a docker container, you need to move in the
