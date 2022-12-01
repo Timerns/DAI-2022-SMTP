@@ -1,16 +1,15 @@
-/**
- * Fichier pour générer des mails de pranks
- *
- * @author Grégory Rey-Mermet
- * @author Tim Ernst
- * @author Eric Peronetti
- * Date    24.11.2022
- */
-package org.example;
+package mail;
 
 import java.util.LinkedList;
 import java.util.Random;
 
+/**
+ * Classe pour générer des mails de pranks
+ *
+ * @author Grégory Rey-Mermet
+ * @author Tim Ernst
+ * @author Eric Peronetti
+ */
 public class MailGenerator {
     /**
      * Liste des emails des personnes à prank

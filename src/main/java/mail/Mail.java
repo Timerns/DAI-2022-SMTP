@@ -1,15 +1,14 @@
+package mail;
+
+import java.util.LinkedList;
+
 /**
- * Fichier pour gérer un mail
+ * Classe pour gérer un mail
  *
  * @author Grégory Rey-Mermet
  * @author Tim Ernst
  * @author Eric Peronetti
- * Date    24.11.2022
  */
-package org.example;
-
-import java.util.LinkedList;
-
 public class Mail {
     /**
      * Le "sender"

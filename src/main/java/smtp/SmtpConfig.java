@@ -1,12 +1,6 @@
-/**
- * Fichier pour récupérer les configurations d'un SMTP
- *
- * @author Grégory Rey-Mermet
- * @author Tim Ernst
- * @author Eric Peronetti
- * Date    24.11.2022
- */
-package org.example;
+package smtp;
+
+import mail.Message;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -16,6 +10,13 @@ import java.util.LinkedList;
 import java.util.Properties;
 import java.util.regex.Pattern;
 
+/**
+ * Classe pour récupérer les configurations d'un SMTP
+ *
+ * @author Grégory Rey-Mermet
+ * @author Tim Ernst
+ * @author Eric Peronetti
+ */
 public class SmtpConfig {
     /**
      * Emplacement des ressources

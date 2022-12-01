@@ -1,13 +1,12 @@
+package mail;
+
 /**
- * Fichier pour gérer un message
+ * Classe pour gérer un message
  *
  * @author Grégory Rey-Mermet
  * @author Tim Ernst
  * @author Eric Peronetti
- * Date    24.11.2022
  */
-package org.example;
-
 public class Message {
     /**
      * Sujet du message

@@ -1,18 +1,19 @@
-/**
- * Fichier contenant des fonctions d'un client SMTP permet d'envoyer des mails
- *
- * @author Grégory Rey-Mermet
- * @author Tim Ernst
- * @author Eric Peronetti
- * Date    24.11.2022
- */
-package org.example;
+package smtp;
+
+import mail.Mail;
 
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
+/**
+ * Classe contenant des fonctions d'un client SMTP permet d'envoyer des mails
+ *
+ * @author Grégory Rey-Mermet
+ * @author Tim Ernst
+ * @author Eric Peronetti
+ */
 public class SmtpClient {
     /**
      * Retour ligne
