@@ -165,3 +165,4 @@ This class is used to send email via SMTP.
     C: Now is the winter of our discontent\r\n
     C: .\r\n
     S: 250 Ok\r\n
+    S: 221 Bye\r\n
