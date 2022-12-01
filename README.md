@@ -99,16 +99,18 @@ The format of the message in the message.uft8 file:
     all         # content of the email
     the 
     folowing 
-    ///         # end the mail with 3 slash
+    ///         # for spliting the email messages
 
 Example of one message in the file:
 
-    test5
+    test0
     Because I could not stop for Death,
     He kindly stopped for me;
     The carriage held but just ourselves
     And Immortality.
-
+    ///
+    test0
+    ...
 ---
 
 ## Description of the implementation
